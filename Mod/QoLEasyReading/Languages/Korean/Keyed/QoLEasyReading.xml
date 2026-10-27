@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <ER_Intro>간편 독서 — 책 기술 표시와 반복 독서</ER_Intro>
+  <ER_TextbookIcons>기술 서적 아이콘</ER_TextbookIcons>
+  <ER_ShowBookcaseIcons>책장 내용물에 기술 아이콘 표시 (기본 ON)</ER_ShowBookcaseIcons>
+  <ER_ShowReadMenuIcons>우클릭 독서 메뉴에 기술 아이콘 표시 (기본 ON)</ER_ShowReadMenuIcons>
+  <ER_ReadMenuIconsDesc>책 읽기 메뉴 오른쪽에 기술 아이콘 1~2개를 표시합니다. 일반 독서 및 Ctrl/Alt 명령은 변경하지 않습니다.</ER_ReadMenuIconsDesc>
+  <ER_ShowTradeIcons>거래창에 기술 아이콘 표시 (기본 ON)</ER_ShowTradeIcons>
+  <ER_TradeIconsDesc>기술 서적의 이름 칸에 아이콘 공간을 확보합니다. 가격·수량·거래 조작은 변경하지 않습니다. 기술 구성이 섞인 묶음에는 표시하지 않습니다.</ER_TradeIconsDesc>
+  <ER_IconSizeLabel>기술 아이콘 크기 (책장 / 독서 메뉴 / 거래창):</ER_IconSizeLabel>
+  <ER_Size100>100%  (18px)</ER_Size100>
+  <ER_Size125>125%  (23px, 기본값)</ER_Size125>
+  <ER_Size150>150%  (27px)</ER_Size150>
+  <ER_TradePositionLabel>거래창 아이콘 위치:</ER_TradePositionLabel>
+  <ER_TradePositionLeft>책 제목 왼쪽 (정보 버튼 뒤, 기본값)</ER_TradePositionLeft>
+  <ER_TradePositionRight>책 제목 오른쪽</ER_TradePositionRight>
+  <ER_BookcasePositionLabel>책장 아이콘 위치:</ER_BookcasePositionLabel>
+  <ER_BookcasePositionLeft>제목 왼쪽 (기본값)</ER_BookcasePositionLeft>
+  <ER_BookcasePositionRight>제목 오른쪽</ER_BookcasePositionRight>
+  <ER_BookIconsFooter>기술 서적에 실제로 지정된 기술 보상을 표시합니다. 그 외의 책은 바닐라 표시와 동작을 유지합니다.</ER_BookIconsFooter>
+  <ER_WorkHeader>작업 시간 중 수동 독서</ER_WorkHeader>
+  <ER_WorkToggle>작업 시간에도 수동 독서 허용 (기본 ON)</ER_WorkToggle>
+  <ER_WorkDesc>직접 지시한 독서(일반 / Shift / Ctrl / Alt)만 작업 시간의 오락 제한을 무시합니다. 자동 독서와 다른 작업 및 그 밖의 독서 중단 조건은 바닐라 그대로입니다.</ER_WorkDesc>
+  <ER_Diagnostics>진단</ER_Diagnostics>
+  <ER_DebugToggle>상세 디버그 로그 활성화 (기본 OFF)</ER_DebugToggle>
+  <ER_DebugDesc>문제 분석용 로그입니다. 평소 플레이할 때는 꺼두세요.</ER_DebugDesc>
+  <ER_RepeatEnabled>책 읽기 메뉴에서 반복 독서 사용</ER_RepeatEnabled>
+  <ER_PresetHeader>프리셋 독서 (작업을 즉시 예약)</ER_PresetHeader>
+  <ER_PresetToggle>프리셋 단축키 사용</ER_PresetToggle>
+  <ER_CustomHeader>직접 설정 독서 (항상 횟수 창 열기)</ER_CustomHeader>
+  <ER_CustomToggle>횟수 입력 단축키 사용</ER_CustomToggle>
+  <ER_ChangeKey>단축키 변경: {0} + 좌클릭</ER_ChangeKey>
+  <ER_StartingCount>프리셋 / 입력창 기본 횟수: {0}</ER_StartingCount>
+  <ER_RestoreShortcuts>기본 단축키 복원 (Ctrl / Alt)</ER_RestoreShortcuts>
+  <ER_KeysDesc1>기본값: Ctrl+독서는 프리셋 예약, Alt+독서는 횟수 창을 엽니다. 일반/Shift 독서는 바닐라 그대로입니다.</ER_KeysDesc1>
+  <ER_KeysDesc2>단축키는 책 읽기 메뉴에서만 작동합니다. 다른 모드와 키가 겹치면 단축키를 변경하세요.</ER_KeysDesc2>
+  <ER_RestoreDefaultsButton>간편 독서 기본값 복원</ER_RestoreDefaultsButton>
+  <ER_DisableFeaturesButton>간편 독서 기능 모두 끄기</ER_DisableFeaturesButton>
+  <ER_RestoreConfirm>간편 독서 설정을 모두 기본값으로 복원할까요? 저장된 단축키와 횟수도 초기화됩니다.</ER_RestoreConfirm>
+  <ER_DisableConfirm>간편 독서 기능을 모두 끌까요? 저장된 횟수와 단축키는 유지됩니다. 이미 예약한 독서 작업은 취소되지 않습니다.</ER_DisableConfirm>
+  <ER_RestoreDone>간편 독서 기본값을 복원하고 저장했습니다.</ER_RestoreDone>
+  <ER_DisableDone>간편 독서 기능을 끄고 저장했습니다.</ER_DisableDone>
+  <ER_RepeatTitle>반복 독서</ER_RepeatTitle>
+  <ER_PawnLabel>림: </ER_PawnLabel>
+  <ER_BookLabel>책: </ER_BookLabel>
+  <ER_Unknown>(없음)</ER_Unknown>
+  <ER_RepeatCount>반복 횟수: {0}</ER_RepeatCount>
+  <ER_QueueDesc>기존 작업 뒤에 독서 작업을 1~50회 예약합니다.</ER_QueueDesc>
+  <ER_Cancel>취소</ER_Cancel>
+  <ER_QueueCountButton>선택한 횟수 예약</ER_QueueCountButton>
+  <ER_SkillsLabel>기술:</ER_SkillsLabel>
+  <ER_PresetKeyTitle>프리셋 독서 단축키</ER_PresetKeyTitle>
+  <ER_DialogKeyTitle>횟수 입력 독서 단축키</ER_DialogKeyTitle>
+  <ER_PressKey>Ctrl, Alt, A~Z 또는 F6~F12를 누르세요.</ER_PressKey>
+  <ER_KeyInstructions>단축키는 책 읽기 메뉴를 클릭할 때만 작동합니다.&#10;Esc는 취소, Shift는 바닐라 작업 예약용입니다.</ER_KeyInstructions>
+  <ER_KeyErrorSettings>설정을 사용할 수 없습니다.</ER_KeyErrorSettings>
+  <ER_KeyErrorAllowed>Ctrl, Alt, A~Z, F6~F12만 사용할 수 있습니다. Shift, Esc, Enter는 예약된 키입니다.</ER_KeyErrorAllowed>
+  <ER_KeyErrorDuplicate>이미 다른 독서 명령에 지정된 단축키입니다.</ER_KeyErrorDuplicate>
+</LanguageData>

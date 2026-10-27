@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- RimWorld 1.7 independent Easy Reading port; 1.6 project is preserved separately. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>QoLEasyReading</AssemblyName>
+    <RootNamespace>ZCN.QoL.EasyReading</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildProjectDirectory)\..\..\RimWorld17.local.props" Condition="Exists('$(MSBuildProjectDirectory)\..\..\RimWorld17.local.props')" />
+  <PropertyGroup>
+    <!-- RimWorld 1.7 (Waylith) ships game assemblies beside the RimWorld executable
+         in either the game root or a nested RimWorld subfolder, not in 1.6 Managed.
+         Explicit RimWorld17ManagedDir in local.props always takes precedence. -->
+    <RimWorld17ManagedDir Condition="'$(RimWorld17ManagedDir)' == '' and '$(RimWorld17GameDir)' != '' and Exists('$(RimWorld17GameDir)\Assembly-CSharp.dll')">$(RimWorld17GameDir)</RimWorld17ManagedDir>
+    <RimWorld17ManagedDir Condition="'$(RimWorld17ManagedDir)' == '' and '$(RimWorld17GameDir)' != '' and Exists('$(RimWorld17GameDir)\RimWorld\Assembly-CSharp.dll')">$(RimWorld17GameDir)\RimWorld</RimWorld17ManagedDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp"><HintPath>$(RimWorld17ManagedDir)\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityStubs"><HintPath>$(RimWorld17ManagedDir)\UnityStubs.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Waylith"><HintPath>$(RimWorld17ManagedDir)\Waylith.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(Harmony17DllPath)</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="ValidateRimWorld17References" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(RimWorld17ManagedDir)' == ''" Text="RimWorld 1.7 assemblies not found. Check RimWorld17.local.props in the solution root, and make sure Assembly-CSharp.dll is in the game root or RimWorld subfolder. Or set RimWorld17ManagedDir explicitly." />
+    <Error Condition="'$(Harmony17DllPath)' == ''" Text="Set Harmony17DllPath to the 1.7 Harmony 3 0Harmony.dll." />
+    <Error Condition="!Exists('$(RimWorld17ManagedDir)\Assembly-CSharp.dll')" Text="Missing 1.7 Assembly-CSharp.dll in $(RimWorld17ManagedDir)." />
+    <Error Condition="!Exists('$(RimWorld17ManagedDir)\UnityStubs.dll')" Text="Missing 1.7 UnityStubs.dll in $(RimWorld17ManagedDir)." />
+    <Error Condition="!Exists('$(RimWorld17ManagedDir)\Waylith.dll')" Text="Missing 1.7 Waylith.dll in $(RimWorld17ManagedDir)." />
+    <Error Condition="!Exists('$(Harmony17DllPath)')" Text="Missing Harmony 3 assembly at $(Harmony17DllPath)." />
+  </Target>
+</Project>

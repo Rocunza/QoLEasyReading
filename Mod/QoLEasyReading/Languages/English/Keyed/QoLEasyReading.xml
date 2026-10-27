@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <ER_Intro>Easy Reading — Book skills and repeat orders</ER_Intro>
+  <ER_TextbookIcons>Textbook skill icons</ER_TextbookIcons>
+  <ER_ShowBookcaseIcons>Show skill icons in bookcase Contents (default ON)</ER_ShowBookcaseIcons>
+  <ER_ShowReadMenuIcons>Show skill icons in right-click Read menu (default ON)</ER_ShowReadMenuIcons>
+  <ER_ReadMenuIconsDesc>Adds 1-2 skill icons at the right edge of Book.Read options only. Ordinary Read/Ctrl/Alt actions are unchanged.</ER_ReadMenuIconsDesc>
+  <ER_ShowTradeIcons>Show skill icons in trading window (default ON)</ER_ShowTradeIcons>
+  <ER_TradeIconsDesc>Textbooks only; reserves space in the trade item name column. Price, quantity, and trade controls are untouched. Mixed-skill stacks get no icons.</ER_TradeIconsDesc>
+  <ER_IconSizeLabel>Textbook icon size (Contents / Read menu / Trade):</ER_IconSizeLabel>
+  <ER_Size100>100%  (18px)</ER_Size100>
+  <ER_Size125>125%  (23px, default)</ER_Size125>
+  <ER_Size150>150%  (27px)</ER_Size150>
+  <ER_TradePositionLabel>Trade window icon placement:</ER_TradePositionLabel>
+  <ER_TradePositionLeft>Left of book title (after info button, default)</ER_TradePositionLeft>
+  <ER_TradePositionRight>Right of book title</ER_TradePositionRight>
+  <ER_BookcasePositionLabel>Bookcase icon placement:</ER_BookcasePositionLabel>
+  <ER_BookcasePositionLeft>Left of title (default)</ER_BookcasePositionLeft>
+  <ER_BookcasePositionRight>Right of title</ER_BookcasePositionRight>
+  <ER_BookIconsFooter>Textbooks use actual skill rewards; other books retain vanilla labels and actions.</ER_BookIconsFooter>
+  <ER_WorkHeader>Manual reading during Work hours</ER_WorkHeader>
+  <ER_WorkToggle>Allow manually ordered reading during Work (default ON)</ER_WorkToggle>
+  <ER_WorkDesc>Only player-ordered Reading jobs (normal / Shift / Ctrl / Alt) ignore the Work schedule's joy-time restriction. Automatic reading and other jobs stay vanilla. Other reading termination rules are unchanged.</ER_WorkDesc>
+  <ER_Diagnostics>Diagnostics</ER_Diagnostics>
+  <ER_DebugToggle>Enable verbose debug logging (default OFF)</ER_DebugToggle>
+  <ER_DebugDesc>Diagnostic messages are intended for troubleshooting; leave this OFF during normal play.</ER_DebugDesc>
+  <ER_RepeatEnabled>Enable repeat reading on book Read menu</ER_RepeatEnabled>
+  <ER_PresetHeader>Preset reading (immediately queues jobs)</ER_PresetHeader>
+  <ER_PresetToggle>Enable preset shortcut</ER_PresetToggle>
+  <ER_CustomHeader>Custom reading (always opens count dialog)</ER_CustomHeader>
+  <ER_CustomToggle>Enable dialog shortcut</ER_CustomToggle>
+  <ER_ChangeKey>Change key: {0} + Left Click</ER_ChangeKey>
+  <ER_StartingCount>Preset / dialog starting count: {0}</ER_StartingCount>
+  <ER_RestoreShortcuts>Restore default shortcuts (Ctrl / Alt)</ER_RestoreShortcuts>
+  <ER_KeysDesc1>Default: Ctrl+Read queues preset; Alt+Read opens dialog. Normal Read and Shift+Read stay vanilla.</ER_KeysDesc1>
+  <ER_KeysDesc2>Keys work only on book Read options. Other mods may still use the same key; change the binding if necessary.</ER_KeysDesc2>
+  <ER_RestoreDefaultsButton>Restore Easy Reading Defaults</ER_RestoreDefaultsButton>
+  <ER_DisableFeaturesButton>Disable Easy Reading Features</ER_DisableFeaturesButton>
+  <ER_RestoreConfirm>Restore all Easy Reading settings to defaults? Saved shortcuts and numbers will reset.</ER_RestoreConfirm>
+  <ER_DisableConfirm>Disable Easy Reading options? Saved numbers and shortcuts are retained. Existing queued reading jobs are not cancelled.</ER_DisableConfirm>
+  <ER_RestoreDone>Easy Reading defaults restored and saved.</ER_RestoreDone>
+  <ER_DisableDone>Easy Reading features disabled and saved.</ER_DisableDone>
+  <ER_RepeatTitle>Repeat reading</ER_RepeatTitle>
+  <ER_PawnLabel>Pawn: </ER_PawnLabel>
+  <ER_BookLabel>Book: </ER_BookLabel>
+  <ER_Unknown>&lt;none&gt;</ER_Unknown>
+  <ER_RepeatCount>Repeat count: {0}</ER_RepeatCount>
+  <ER_QueueDesc>Queues 1-50 reading jobs after existing orders.</ER_QueueDesc>
+  <ER_Cancel>Cancel</ER_Cancel>
+  <ER_QueueCountButton>Queue selected count</ER_QueueCountButton>
+  <ER_SkillsLabel>Skills:</ER_SkillsLabel>
+  <ER_PresetKeyTitle>Preset reading shortcut</ER_PresetKeyTitle>
+  <ER_DialogKeyTitle>Dialog reading shortcut</ER_DialogKeyTitle>
+  <ER_PressKey>Press Ctrl, Alt, A-Z, or F6-F12.</ER_PressKey>
+  <ER_KeyInstructions>Keys are active only while clicking a book's Read menu option.&#10;Esc cancels. Shift is reserved for vanilla queueing.</ER_KeyInstructions>
+  <ER_KeyErrorSettings>Settings unavailable.</ER_KeyErrorSettings>
+  <ER_KeyErrorAllowed>Use Ctrl, Alt, A-Z or F6-F12. Shift, Esc and Enter are reserved.</ER_KeyErrorAllowed>
+  <ER_KeyErrorDuplicate>That key is already assigned to the other reading command.</ER_KeyErrorDuplicate>
+</LanguageData>

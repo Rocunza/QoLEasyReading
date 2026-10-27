@@ -1,0 +1,7 @@
+*.cs text eol=crlf
+*.csproj text eol=crlf
+*.props text eol=crlf
+*.md text eol=lf
+*.xml text eol=lf
+*.png binary
+*.dll binary

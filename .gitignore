@@ -1,0 +1,23 @@
+# Visual Studio / MSBuild / .NET
+**/.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.pdb
+# Local reference paths and test data; examples are intentionally tracked.
+RimWorld.local.props
+RimWorld17.local.props
+**/*.local.props
+**/RimWorld.local.props
+**/RimWorld17.local.props
+*.log
+*.tmp
+*.bak
+*.zip
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

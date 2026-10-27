@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84D586C0-35D8-41DA-906E-03C122A88EE7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZCN.QoL.EasyReading</RootNamespace>
+    <AssemblyName>QoLEasyReading</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <!-- Local paths are deliberately kept out of source control. Copy RimWorld.local.props.example to RimWorld.local.props. -->
+  <Import Project="$(MSBuildProjectDirectory)\..\RimWorld.local.props" Condition="Exists('$(MSBuildProjectDirectory)\..\RimWorld.local.props')" />
+  <PropertyGroup>
+    <!-- Command-line /p: properties, environment variables or RimWorld.local.props can supply these. -->
+    <RimWorldManagedDir Condition="'$(RimWorldManagedDir)' == '' and '$(RimWorldDir)' != ''">$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManagedDir>
+    <HarmonyDllPath Condition="'$(HarmonyDllPath)' == '' and '$(HarmonyDir)' != ''">$(HarmonyDir)\0Harmony.dll</HarmonyDllPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDllPath)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Books\BookContentsSkillIcons.cs" />
+    <Compile Include="Books\BookReadFloatMenuSkillIcons.cs" />
+    <Compile Include="Books\BookSkillIconCatalog.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.cs" />
+    <Compile Include="Core\EasyReadingBuildIdentity.cs" />
+    <Compile Include="Core\EasyReadingI18n.cs" />
+    <Compile Include="Core\EasyReadingMod.cs" />
+    <Compile Include="Core\EasyReadingStartup.cs" />
+    <Compile Include="Core\ManualReadingWorkScheduleOverride.cs" />
+    <Compile Include="Diagnostics\EasyReadingDebug.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepeatReading\Dialog_RepeatReadingKeyBinding.cs" />
+    <Compile Include="RepeatReading\ReadingRepeatDialog.cs" />
+    <Compile Include="RepeatReading\ReadingRepeatMenu.cs" />
+    <Compile Include="RepeatReading\ReadingRepeatQueue.cs" />
+    <Compile Include="RepeatReading\RepeatReadingShortcut.cs" />
+    <Compile Include="RepeatReading\RepeatReadingShortcutSettingsUI.cs" />
+    <Compile Include="Settings\EasyReadingSettings.cs" />
+    <Compile Include="Settings\EasyReadingSettingsData.cs" />
+    <Compile Include="Settings\EasyReadingSettingsPresets.cs" />
+    <Compile Include="Settings\EasyReadingSettingsUI.cs" />
+    <Compile Include="Settings\SettingsTypography.cs" />
+  </ItemGroup>
+  <!-- The original RimWorld and Harmony game libraries are used only as references; never copied into outputs. -->
+  <Target Name="ValidateRimWorld16References" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(RimWorldManagedDir)' == ''" Text="QoL Easy Reading: RimWorldManagedDir is not configured. Copy RimWorld.local.props.example to RimWorld.local.props and edit RimWorldDir, or pass /p:RimWorldDir=... (see BUILDING.md)." />
+    <Error Condition="'$(HarmonyDllPath)' == ''" Text="QoL Easy Reading: HarmonyDllPath is not configured. Set HarmonyDllPath to your Harmony 1.6 0Harmony.dll in RimWorld.local.props (see BUILDING.md)." />
+    <Error Condition="!Exists('$(RimWorldManagedDir)\Assembly-CSharp.dll')" Text="QoL Easy Reading: Assembly-CSharp.dll not found in '$(RimWorldManagedDir)'. Verify RimWorld 1.6 Windows install directory." />
+    <Error Condition="!Exists('$(RimWorldManagedDir)\UnityEngine.CoreModule.dll')" Text="QoL Easy Reading: UnityEngine.CoreModule.dll not found in '$(RimWorldManagedDir)'." />
+    <Error Condition="!Exists('$(RimWorldManagedDir)\UnityEngine.IMGUIModule.dll')" Text="QoL Easy Reading: UnityEngine.IMGUIModule.dll not found in '$(RimWorldManagedDir)'." />
+    <Error Condition="!Exists('$(RimWorldManagedDir)\UnityEngine.InputLegacyModule.dll')" Text="QoL Easy Reading: UnityEngine.InputLegacyModule.dll not found in '$(RimWorldManagedDir)'." />
+    <Error Condition="!Exists('$(RimWorldManagedDir)\UnityEngine.TextRenderingModule.dll')" Text="QoL Easy Reading: UnityEngine.TextRenderingModule.dll not found in '$(RimWorldManagedDir)'." />
+    <Error Condition="!Exists('$(HarmonyDllPath)')" Text="QoL Easy Reading: 0Harmony.dll not found at '$(HarmonyDllPath)'. Check HarmonyDllPath." />
+  </Target>
+<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
