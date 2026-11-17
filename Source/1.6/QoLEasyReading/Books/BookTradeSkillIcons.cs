@@ -10,7 +10,7 @@ using Verse;
 namespace ZCN.QoL.EasyReading
 {
     /// <summary>
-    /// 4S-2H3A: Trade book skill markers (left/right) with Useful Marks compatibility.
+    /// 4S-2H3A + S3-B2: Trade book icons with Useful Marks compatibility.
     /// The 1.6 Useful Marks transpiler replaces the vanilla Widgets.Label
     /// (Rect,string) title call with its MarkedLabel(Rect,Transferable) call.
     /// Never replace/bypass that third-party method: leave its call intact and
@@ -21,16 +21,23 @@ namespace ZCN.QoL.EasyReading
     /// </summary>
     [HarmonyPatch(typeof(TransferableUIUtility), nameof(TransferableUIUtility.DrawTransferableInfo),
         new Type[] { typeof(Transferable), typeof(Rect), typeof(Color) })]
-    internal static class BookTradeSkillIcons
+    internal static partial class BookTradeSkillIcons
     {
         private const float LeftContentWidth = 80f; // vanilla thing icon/info button
         private const float MinimumNameWidth = 65f;
         private const float SlotGap = 3f;
         private const float LeftGap = 3f;
         private const float EndPadding = 5f;
+        // LoggedLeftHookWarning guards a user-relevant compatibility warning.
+        private static bool LoggedLeftHookWarning;
+#if DEBUG
         private static bool LoggedFirstPaint;
         private static bool LoggedMixedGroup;
-        private static bool LoggedLeftHookWarning;
+        private static readonly HashSet<string> LoggedSchematicDecisions =
+            new HashSet<string>(StringComparer.Ordinal);
+        private static readonly HashSet<SchematicIconKind> LoggedSchematicPaints =
+            new HashSet<SchematicIconKind>();
+#endif
         private static bool LeftTitleHookReady;
 
         // DrawTransferableInfo is a GUI call. Limit the temporary title shift
@@ -42,6 +49,11 @@ namespace ZCN.QoL.EasyReading
         {
             internal bool Paint;
             internal bool Left;
+            internal bool Schematic;
+            internal SchematicIconKind SchematicKind;
+            internal Texture2D SchematicTexture;
+            internal string DuplicateProjectKey;
+            internal SchematicOwnershipSnapshot DuplicateOwnershipSnapshot;
             internal SkillDef First;
             internal SkillDef Second;
             internal Rect FirstIcon;
@@ -155,204 +167,5 @@ namespace ZCN.QoL.EasyReading
             return rect;
         }
 
-        [HarmonyPrefix]
-        private static void Prefix(Transferable trad, ref Rect idRect, out RowState __state)
-        {
-            __state = default(RowState);
-            activeLeftTitleShift = 0f;
-            EasyReadingSettings settings = EasyReadingMod.Settings;
-            if (settings == null || !settings.showTradeSkillIcons ||
-                !TradeSession.Active || !(trad is Tradeable) ||
-                Event.current == null)
-                return;
-            try
-            {
-                Tradeable tradeable = (Tradeable)trad;
-                // The check prevents error logging inside AnyThing on empty rows.
-                if (!tradeable.IsThing || !tradeable.HasAnyThing ||
-                    !(tradeable.AnyThing is Book))
-                    return;
-
-                SkillDef first;
-                SkillDef second;
-                if (!TryGetUniformSkills(tradeable, out first, out second))
-                    return;
-
-                float iconSize = IconSize(settings.bookSkillIconSizePercent);
-                // Fit even the largest (27px) icon within the current row.
-                // Smaller UI scales may make the row shorter.
-                iconSize = Mathf.Min(iconSize, idRect.height - 2f);
-                if (iconSize < 8f)
-                    return;
-
-                // Reserve only the actual skill slots (one or two).
-                // Two-skill layout reserves the same width as the previous
-                // calculation; one-skill titles no longer waste a blank slot.
-                float reserve = LeftGap + iconSize +
-                    (second != null ? iconSize + SlotGap : 0f) + EndPadding;
-                if (idRect.width < LeftContentWidth + MinimumNameWidth + reserve)
-                    return; // Tiny windows: vanilla label wins; never overlap.
-
-                bool placeLeft = settings.tradeSkillIconPosition == 0;
-                if (placeLeft && !LeftTitleHookReady)
-                {
-                    if (!LoggedLeftHookWarning)
-                    {
-                        LoggedLeftHookWarning = true;
-                        Log.Warning("[QoL: Easy Reading][TradeUI] Left markers " +
-                            "hidden because title-indent hook is unavailable.");
-                    }
-                    return;
-                }
-
-                // RIGHT: F1 placement at the end of the item's name column.
-                // LEFT: after the vanilla 27px thing icon and info button,
-                // before the title that the narrow transpiler shifts right.
-                float startX = placeLeft
-                    ? idRect.x + LeftContentWidth + LeftGap
-                    : idRect.xMax - reserve + LeftGap;
-                float y = idRect.y + (idRect.height - iconSize) * 0.5f;
-                __state.First = first;
-                __state.Second = second;
-                __state.Left = placeLeft;
-                __state.FirstIcon = new Rect(startX, y, iconSize, iconSize);
-                __state.SecondIcon = new Rect(startX + iconSize + SlotGap, y,
-                    iconSize, iconSize);
-                __state.Paint = true;
-
-                if (placeLeft)
-                {
-                    // Only Widgets.Label's book title gets indented. The
-                    // ordinary info button, icon and full-row tooltip remain.
-                    activeLeftTitleShift = reserve;
-                }
-                else
-                {
-                    // Existing F1 path: clip label by narrowing idRect;
-                    // do not shift the title or the trade controls.
-                    idRect.width -= reserve;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Never impair an otherwise functional trade window.
-                __state = default(RowState);
-                activeLeftTitleShift = 0f;
-                Log.ErrorOnce("[QoL: Easy Reading][TradeUI] Skill layout skipped: " + ex,
-                    1726194620);
-            }
-        }
-
-        [HarmonyPostfix]
-        private static void Postfix(RowState __state)
-        {
-            // Clear the title shift before painting tooltips/icons, avoiding
-            // any spillover to later GUI rows or unrelated label rendering.
-            activeLeftTitleShift = 0f;
-            if (!__state.Paint || Event.current == null)
-                return;
-            try
-            {
-                PaintOne(__state.First, __state.FirstIcon);
-                if (__state.Second != null)
-                    PaintOne(__state.Second, __state.SecondIcon);
-                if (EasyReadingDebug.Enabled && !LoggedFirstPaint &&
-                    Event.current.type == EventType.Repaint)
-                {
-                    LoggedFirstPaint = true;
-                    Log.Message("[QoL: Easy Reading][TradeUI] First trade textbook icons " +
-                        "painted: " + __state.First.defName +
-                        (__state.Second == null ? "" : ", " + __state.Second.defName) +
-                        "; position=" + (__state.Left ? "Left" : "Right") +
-                        "; titleReserved=True; input/price/count untouched=True.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.ErrorOnce("[QoL: Easy Reading][TradeUI] Skill painting skipped: " + ex,
-                    1726194621);
-            }
-        }
-
-        private static float IconSize(int percent)
-        {
-            switch (BookContentsSkillIcons.NormalizeSize(percent))
-            {
-                case 100: return 18f;
-                case 150: return 27f;
-                default: return 23f;
-            }
-        }
-
-        private static bool TryGetUniformSkills(Tradeable tradeable,
-            out SkillDef first, out SkillDef second)
-        {
-            first = null;
-            second = null;
-            Book sample = tradeable.AnyThing as Book;
-            if (sample == null)
-                return false;
-            BookSkillIconCatalog.GetBookSkills(sample, out first, out second);
-            if (first == null)
-                return false; // Ordinary books remain entirely vanilla.
-
-            bool matching = GroupMatches(tradeable.thingsColony, first, second) &&
-                GroupMatches(tradeable.thingsTrader, first, second);
-            if (!matching && EasyReadingDebug.Enabled && !LoggedMixedGroup &&
-                Event.current.type == EventType.Repaint)
-            {
-                LoggedMixedGroup = true;
-                Log.Warning("[QoL: Easy Reading][TradeUI] Mixed book rewards in " +
-                    "one Tradeable; icons deliberately hidden for accuracy.");
-            }
-            return matching;
-        }
-
-        private static bool GroupMatches(List<Thing> group,
-            SkillDef expectedFirst, SkillDef expectedSecond)
-        {
-            if (group == null)
-                return true;
-            for (int i = 0; i < group.Count; i++)
-            {
-                Thing thing = group[i];
-                if (thing == null)
-                    return false;
-                Book book = thing.GetInnerIfMinified() as Book;
-                if (book == null)
-                    return false;
-                SkillDef first;
-                SkillDef second;
-                BookSkillIconCatalog.GetBookSkills(book, out first, out second);
-                if (!((first == expectedFirst && second == expectedSecond) ||
-                      (expectedSecond != null && first == expectedSecond &&
-                       second == expectedFirst)))
-                    return false;
-            }
-            return true;
-        }
-
-        private static void PaintOne(SkillDef skill, Rect rect)
-        {
-            if (skill == null)
-                return;
-            Texture2D texture = BookSkillIconCatalog.GetTexture(skill);
-            if (texture != null && Event.current.type == EventType.Repaint)
-            {
-                Color oldColor = GUI.color;
-                try
-                {
-                    GUI.color = Color.white;
-                    GUI.DrawTexture(rect, texture);
-                }
-                finally
-                {
-                    GUI.color = oldColor;
-                }
-            }
-            // The icon is passive. It supplies its own localized tooltip
-            // and never intercepts any mouse/key action.
-            TooltipHandler.TipRegion(rect, skill.LabelCap.ToString());
-        }
     }
 }

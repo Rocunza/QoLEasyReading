@@ -11,22 +11,105 @@
     <GenerateDependencyFile>false</GenerateDependencyFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Deterministic>true</Deterministic>
-    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
+  <!-- Always keep DEBUG isolated to its own build configuration. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <Import Project="$(MSBuildProjectDirectory)\..\..\RimWorld17.local.props" Condition="Exists('$(MSBuildProjectDirectory)\..\..\RimWorld17.local.props')" />
+  <!-- Keep the original PORT1 grandparent props contract; also accept project-local props. -->
+  <Import Project="$(MSBuildProjectDirectory)\..\RimWorld17.local.props" Condition="Exists('$(MSBuildProjectDirectory)\..\RimWorld17.local.props')" />
+  <Import Project="$(MSBuildProjectDirectory)\RimWorld17.local.props" Condition="Exists('$(MSBuildProjectDirectory)\RimWorld17.local.props')" />
   <PropertyGroup>
     <!-- RimWorld 1.7 (Waylith) ships game assemblies beside the RimWorld executable
          in either the game root or a nested RimWorld subfolder, not in 1.6 Managed.
          Explicit RimWorld17ManagedDir in local.props always takes precedence. -->
     <RimWorld17ManagedDir Condition="'$(RimWorld17ManagedDir)' == '' and '$(RimWorld17GameDir)' != '' and Exists('$(RimWorld17GameDir)\Assembly-CSharp.dll')">$(RimWorld17GameDir)</RimWorld17ManagedDir>
     <RimWorld17ManagedDir Condition="'$(RimWorld17ManagedDir)' == '' and '$(RimWorld17GameDir)' != '' and Exists('$(RimWorld17GameDir)\RimWorld\Assembly-CSharp.dll')">$(RimWorld17GameDir)\RimWorld</RimWorld17ManagedDir>
+    <Harmony17DllPath Condition="'$(Harmony17DllPath)' == '' and '$(RimWorld17ManagedDir)' != '' and Exists('$(RimWorld17ManagedDir)\0Harmony.dll')">$(RimWorld17ManagedDir)\0Harmony.dll</Harmony17DllPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp"><HintPath>$(RimWorld17ManagedDir)\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="UnityStubs"><HintPath>$(RimWorld17ManagedDir)\UnityStubs.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Waylith"><HintPath>$(RimWorld17ManagedDir)\Waylith.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="0Harmony"><HintPath>$(Harmony17DllPath)</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <!-- PORT17-V110: 55 production files + 8 Debug-only audits; 2 legacy CS uncompiled. -->
+  <ItemGroup>
+    <Compile Include="Books\BookContentsSkillIcons.cs" />
+    <Compile Include="Books\BookContentsIconLayout.cs" />
+    <Compile Include="Books\BookIconMetrics.cs" />
+    <Compile Include="Books\BookIconPresentation.cs" />
+    <Compile Include="Books\BookIconResolver.cs" />
+    <Compile Include="Books\BookReadFloatMenuSkillIcons.cs" />
+    <Compile Include="Books\BookSkillIconCatalog.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.Row.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.Paint.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.Textbook.cs" />
+    <Compile Include="Books\SchematicTradeDuplicateTooltip.cs" />
+    <Compile Include="Core\EasyReadingBuildIdentity.cs" />
+    <Compile Include="Core\EasyReadingI18n.cs" />
+    <Compile Include="Core\EasyReadingMod.cs" />
+    <Compile Include="Core\EasyReadingRuntimeHealth.cs" />
+    <Compile Include="Core\EasyReadingStartup.cs" />
+    <Compile Include="Core\ManualReadingWorkScheduleOverride.cs" />
+    <Compile Include="Diagnostics\EasyReadingDebug.cs" />
+    <Compile Include="Schematic\SchematicBookcaseIconResolver.cs" />
+    <Compile Include="Schematic\SchematicResearchAccess.cs" />
+    <Compile Include="Schematic\SchematicResearchState.cs" />
+    <Compile Include="Schematic\SchematicResearchResolver.cs" />
+    <Compile Include="Schematic\SchematicResearchSignature.cs" />
+    <Compile Include="Schematic\SchematicOwnershipResolver.cs" />
+    <Compile Include="Schematic\SchematicDuplicateTooltipContent.cs" />
+    <Compile Include="Schematic\SchematicOwnershipSources.cs" />
+    <Compile Include="Schematic\SchematicOwnershipTrace.cs" />
+    <Compile Include="Schematic\SchematicTradeGroupResolver.cs" />
+    <Compile Include="Schematic\SchematicTradeGroupInspector.cs" />
+    <Compile Include="Schematic\SchematicTradeGroupDecisionPolicy.cs" />
+    <Compile Include="Schematic\SchematicTradeOwnershipSession.cs" />
+    <Compile Include="Schematic\SchematicTradePurchaseIconPolicy.cs" />
+    <Compile Include="Schematic\SchematicTradeIconResolver.cs" />
+    <Compile Include="Schematic\SchematicTradeIconRenderer.cs" />
+    <Compile Include="Schematic\SchematicResearchClassifier.cs" />
+    <Compile Include="Schematic\SchematicStatusIconResolver.cs" />
+    <Compile Include="Schematic\SchematicResearchBenefitTooltip.cs" />
+    <Compile Include="Schematic\SchematicStatusIconCatalog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepeatReading\Dialog_RepeatReadingKeyBinding.cs" />
+    <Compile Include="RepeatReading\ReadingRepeatDialog.cs" />
+    <Compile Include="RepeatReading\ReadingRepeatMenu.cs" />
+    <Compile Include="RepeatReading\ReadingRepeatQueue.cs" />
+    <Compile Include="RepeatReading\RepeatReadingShortcut.cs" />
+    <Compile Include="RepeatReading\RepeatReadingShortcutSettingsUI.cs" />
+    <Compile Include="Settings\EasyReadingSettings.cs" />
+    <Compile Include="Settings\EasyReadingSettingsData.cs" />
+    <Compile Include="Settings\EasyReadingSettingsPresets.cs" />
+    <Compile Include="Settings\EasyReadingSettingsUI.cs" />
+    <Compile Include="Settings\EasyReadingSettingsWindow.cs" />
+    <Compile Include="Settings\EasyReadingBasicTab.cs" />
+    <Compile Include="Settings\EasyReadingIconsTab.cs" />
+    <Compile Include="Settings\SettingsControlLayout.cs" />
+    <Compile Include="Settings\SettingsTypography.cs" />
+  </ItemGroup>
+  <!-- Stable production code is compiled in both configurations.
+       Pure diagnostic actions/audits are linked only into Debug builds. -->
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <Compile Include="Diagnostics\SchematicIconAssetAudit.cs" />
+    <Compile Include="Diagnostics\SchematicLiveResearchProbe.cs" />
+    <Compile Include="Diagnostics\SchematicOwnershipAudit.cs" />
+    <Compile Include="Diagnostics\SchematicOwnershipTraceLogger.cs" />
+    <Compile Include="Diagnostics\SchematicResearchAudit.cs" />
+    <Compile Include="Diagnostics\SchematicTradeGroupDiagnostics.cs" />
+    <Compile Include="Diagnostics\SchematicTradeGroupRegressionAudit.cs" />
+    <Compile Include="Diagnostics\SchematicTradeGroupTestFixtures.cs" />
   </ItemGroup>
   <Target Name="ValidateRimWorld17References" BeforeTargets="ResolveReferences">
     <Error Condition="'$(RimWorld17ManagedDir)' == ''" Text="RimWorld 1.7 assemblies not found. Check RimWorld17.local.props in the solution root, and make sure Assembly-CSharp.dll is in the game root or RimWorld subfolder. Or set RimWorld17ManagedDir explicitly." />

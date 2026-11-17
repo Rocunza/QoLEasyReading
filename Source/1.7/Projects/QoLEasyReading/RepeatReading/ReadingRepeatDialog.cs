@@ -44,7 +44,9 @@ namespace ZCN.QoL.EasyReading
             SkillDef second = null;
             try
             {
-                BookSkillIconCatalog.GetBookSkills(book, out first, out second);
+                BookIconPresentation presentation = BookIconResolver.ResolveTextbook(book);
+                first = presentation.FirstSkill;
+                second = presentation.SecondSkill;
             }
             catch (Exception ex)
             {
@@ -206,9 +208,8 @@ namespace ZCN.QoL.EasyReading
             }
 
             EasyReadingSettings settings = EasyReadingMod.Settings;
-            int percent = settings == null ? 125 :
-                BookContentsSkillIcons.NormalizeSize(settings.bookSkillIconSizePercent);
-            float iconSize = percent == 100 ? 18f : (percent == 150 ? 27f : 23f);
+            float iconSize = BookIconMetrics.IconSize(
+                settings == null ? 125 : settings.bookSkillIconSizePercent);
             float availableWidth = Mathf.Max(0f, contentWidth - labelStartX);
             if (second == null)
             {

@@ -21,3 +21,11 @@ RimWorld17.local.props
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Easy Reading diagnostics and generated release audit artifacts
+**/S3RELDIAG1_LAST_BUILD_INSTALL_LOG.json
+**/PORT17_LAST_BUILD_INSTALL_LOG.json
+**/PORT17_BUILD_*.log
+**/*_InstallBackups/
+**/*.rw17stage-*
+**/*.s3uitab2-stage-*

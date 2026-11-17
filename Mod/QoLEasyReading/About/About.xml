@@ -4,7 +4,6 @@
   <author>ZCN</author>
   <packageId>zcn.qol.easyreading</packageId>
   <supportedVersions>
-    <li>1.6</li>
     <li>1.7</li>
   </supportedVersions>
   <modDependencies>
@@ -17,9 +16,12 @@
   <loadAfter>
     <li>brrainz.harmony</li>
   </loadAfter>
-  <description>Improves book reading with small quality-of-life features while keeping vanilla reading behavior intact.
+  <description>Version: v1.1.0
+
+Improves book reading with small quality-of-life features while keeping vanilla reading behavior intact.
 
 • Shows textbook skill icons in bookcases, reading menus, and trade windows.
+• Shows schematic research status in bookcases, right-click menus, and trade windows, with duplicate-ownership warnings when trading.
 • Ctrl + Left Click queues repeated reading for the configured number of times.
 • Alt + Left Click lets you choose the number of repeated reading jobs manually.
 • Manually ordered reading can continue during Work schedule time.
@@ -29,6 +31,7 @@ All features can be enabled or disabled individually in the mod settings.
 바닐라 독서 동작은 유지하면서 책 읽기의 편의성을 개선합니다.
 
 • 책장, 독서 명령, 거래창에 교과서 기술 아이콘을 표시합니다.
+• 책장, 우클릭 메뉴, 거래창에서 설계도의 연구 상태를 아이콘으로 표시하고, 거래 시 이미 보유한 설계도에 중복 구매 경고를 표시합니다.
 • Ctrl + 좌클릭으로 설정된 횟수만큼 반복 독서를 예약합니다.
 • Alt + 좌클릭으로 독서 예약의 반복 횟수를 직접 선택할 수 있습니다.
 • 수동으로 명령한 독서는 Work 시간표 중에도 계속할 수 있습니다.

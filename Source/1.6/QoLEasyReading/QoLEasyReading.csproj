@@ -73,15 +73,44 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Books\BookContentsSkillIcons.cs" />
+    <Compile Include="Books\BookContentsIconLayout.cs" />
+    <Compile Include="Books\BookIconMetrics.cs" />
+    <Compile Include="Books\BookIconPresentation.cs" />
+    <Compile Include="Books\BookIconResolver.cs" />
     <Compile Include="Books\BookReadFloatMenuSkillIcons.cs" />
     <Compile Include="Books\BookSkillIconCatalog.cs" />
     <Compile Include="Books\BookTradeSkillIcons.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.Row.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.Paint.cs" />
+    <Compile Include="Books\BookTradeSkillIcons.Textbook.cs" />
+    <Compile Include="Books\SchematicTradeDuplicateTooltip.cs" />
     <Compile Include="Core\EasyReadingBuildIdentity.cs" />
     <Compile Include="Core\EasyReadingI18n.cs" />
     <Compile Include="Core\EasyReadingMod.cs" />
+    <Compile Include="Core\EasyReadingRuntimeHealth.cs" />
     <Compile Include="Core\EasyReadingStartup.cs" />
     <Compile Include="Core\ManualReadingWorkScheduleOverride.cs" />
     <Compile Include="Diagnostics\EasyReadingDebug.cs" />
+    <Compile Include="Schematic\SchematicBookcaseIconResolver.cs" />
+    <Compile Include="Schematic\SchematicResearchAccess.cs" />
+    <Compile Include="Schematic\SchematicResearchState.cs" />
+    <Compile Include="Schematic\SchematicResearchResolver.cs" />
+    <Compile Include="Schematic\SchematicResearchSignature.cs" />
+    <Compile Include="Schematic\SchematicOwnershipResolver.cs" />
+    <Compile Include="Schematic\SchematicDuplicateTooltipContent.cs" />
+    <Compile Include="Schematic\SchematicOwnershipSources.cs" />
+    <Compile Include="Schematic\SchematicOwnershipTrace.cs" />
+    <Compile Include="Schematic\SchematicTradeGroupResolver.cs" />
+    <Compile Include="Schematic\SchematicTradeGroupInspector.cs" />
+    <Compile Include="Schematic\SchematicTradeGroupDecisionPolicy.cs" />
+    <Compile Include="Schematic\SchematicTradeOwnershipSession.cs" />
+    <Compile Include="Schematic\SchematicTradePurchaseIconPolicy.cs" />
+    <Compile Include="Schematic\SchematicTradeIconResolver.cs" />
+    <Compile Include="Schematic\SchematicTradeIconRenderer.cs" />
+    <Compile Include="Schematic\SchematicResearchClassifier.cs" />
+    <Compile Include="Schematic\SchematicStatusIconResolver.cs" />
+    <Compile Include="Schematic\SchematicResearchBenefitTooltip.cs" />
+    <Compile Include="Schematic\SchematicStatusIconCatalog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepeatReading\Dialog_RepeatReadingKeyBinding.cs" />
     <Compile Include="RepeatReading\ReadingRepeatDialog.cs" />
@@ -93,7 +122,22 @@
     <Compile Include="Settings\EasyReadingSettingsData.cs" />
     <Compile Include="Settings\EasyReadingSettingsPresets.cs" />
     <Compile Include="Settings\EasyReadingSettingsUI.cs" />
+    <Compile Include="Settings\EasyReadingSettingsWindow.cs" />
+    <Compile Include="Settings\EasyReadingBasicTab.cs" />
+    <Compile Include="Settings\EasyReadingIconsTab.cs" />
+    <Compile Include="Settings\SettingsControlLayout.cs" />
     <Compile Include="Settings\SettingsTypography.cs" />
+  </ItemGroup>
+  <!-- S3-REL-DIAG1: diagnostics and developer actions exist only in Debug assemblies. -->
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <Compile Include="Diagnostics\SchematicResearchAudit.cs" />
+    <Compile Include="Diagnostics\SchematicLiveResearchProbe.cs" />
+    <Compile Include="Diagnostics\SchematicIconAssetAudit.cs" />
+    <Compile Include="Diagnostics\SchematicOwnershipAudit.cs" />
+    <Compile Include="Diagnostics\SchematicOwnershipTraceLogger.cs" />
+    <Compile Include="Diagnostics\SchematicTradeGroupDiagnostics.cs" />
+    <Compile Include="Diagnostics\SchematicTradeGroupRegressionAudit.cs" />
+    <Compile Include="Diagnostics\SchematicTradeGroupTestFixtures.cs" />
   </ItemGroup>
   <!-- The original RimWorld and Harmony game libraries are used only as references; never copied into outputs. -->
   <Target Name="ValidateRimWorld16References" BeforeTargets="ResolveReferences">

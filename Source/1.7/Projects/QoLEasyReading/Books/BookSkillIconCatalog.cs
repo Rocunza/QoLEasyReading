@@ -26,7 +26,9 @@ namespace ZCN.QoL.EasyReading
         private const uint FailedRetryIntervalMs = 3000U;
         private static bool LanguageObserved;
         private static string LastLanguageFolder;
+#if DEBUG
         private static bool AssetAuditComplete;
+#endif
         private static readonly string[] BuiltInSkills =
         {
             "Shooting", "Melee", "Construction", "Mining", "Cooking", "Plants",
@@ -104,16 +106,21 @@ namespace ZCN.QoL.EasyReading
             Textures.Clear();
             FailedLoadAt.Clear();
             Missing.Clear();
+#if DEBUG
             AssetAuditComplete = false;
+#endif
+#if DEBUG
             if (EasyReadingDebug.Enabled)
                 Log.Message("[QoL: Easy Reading][BookUI] Language changed; icon cache reset (" +
                     current + ").");
+#endif
         }
 
         /// <summary>
         /// Explicit, opt-in boot/settings diagnostic; never scans all game books.
         /// Should not be called per-frame.
         /// </summary>
+#if DEBUG
         internal static void AuditAssetsIfDebug()
         {
             if (!EasyReadingDebug.Enabled)
@@ -148,6 +155,8 @@ namespace ZCN.QoL.EasyReading
                 "; enabled=" + (EasyReadingMod.Settings != null &&
                 EasyReadingMod.Settings.showBookSkillIcons) + ".");
         }
+
+#endif
 
         private static Texture2D GetAsset(string iconName)
         {

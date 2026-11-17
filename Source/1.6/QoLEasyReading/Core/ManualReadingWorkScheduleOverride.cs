@@ -16,7 +16,9 @@ namespace ZCN.QoL.EasyReading
     internal static class ManualReadingWorkScheduleOverride
     {
         private static bool installed;
+#if DEBUG
         private static int debugHitCount;
+#endif
 
         // A value type is cheap to store per invocation, and does not keep
         // references beyond the Harmony method call.
@@ -85,6 +87,7 @@ namespace ZCN.QoL.EasyReading
             job.ignoreJoyTimeAssignment = true;
 
             // Debug-only and capped; no per-tick log spam during normal play.
+#if DEBUG
             if (EasyReadingDebug.Enabled)
             {
                 debugHitCount++;
@@ -96,6 +99,7 @@ namespace ZCN.QoL.EasyReading
                         " job=" + job.def.defName +
                         " temporaryFlag=True");
             }
+#endif
         }
 
         private static void AfterJoyCheck(ref TemporaryFlag __state)

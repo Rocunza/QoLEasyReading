@@ -8,7 +8,7 @@ using Verse.AI;
 namespace ZCN.QoL.EasyReading
 {
     /// <summary>
-    /// WORK-FIX1 (RimWorld 1.7 port): do not mutate a pawn's timetable or
+    /// WORK-FIX1 (RimWorld 1.7): do not mutate a pawn's timetable or
     /// permanently modify a Reading job. Temporarily bypass ONLY the
     /// joy-time-assignment check while JoyTickCheckEnd is executing for
     /// a player-forced Reading job during Work hours, with settings ON.
@@ -16,7 +16,9 @@ namespace ZCN.QoL.EasyReading
     internal static class ManualReadingWorkScheduleOverride
     {
         private static bool installed;
+#if DEBUG
         private static int debugHitCount;
+#endif
 
         // A value type is cheap to store per invocation, and does not keep
         // references beyond the Harmony method call.
@@ -85,6 +87,7 @@ namespace ZCN.QoL.EasyReading
             job.ignoreJoyTimeAssignment = true;
 
             // Debug-only and capped; no per-tick log spam during normal play.
+#if DEBUG
             if (EasyReadingDebug.Enabled)
             {
                 debugHitCount++;
@@ -96,6 +99,7 @@ namespace ZCN.QoL.EasyReading
                         " job=" + job.def.defName +
                         " temporaryFlag=True");
             }
+#endif
         }
 
         private static void AfterJoyCheck(ref TemporaryFlag __state)

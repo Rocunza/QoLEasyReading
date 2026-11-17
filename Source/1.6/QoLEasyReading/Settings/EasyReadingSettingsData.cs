@@ -66,6 +66,21 @@ namespace ZCN.QoL.EasyReading
                 "showTradeSkillIcons", true
             );
 
+            // New fields default ON when absent in legacy settings XML.
+            // S2-B2 intentionally does not expose these until S3 renders icons.
+            Scribe_Values.Look(
+                ref settings.showSchematicBookcaseIcons,
+                "showSchematicBookcaseIcons", true
+            );
+            Scribe_Values.Look(
+                ref settings.showSchematicReadMenuIcons,
+                "showSchematicReadMenuIcons", true
+            );
+            Scribe_Values.Look(
+                ref settings.showSchematicTradeIcons,
+                "showSchematicTradeIcons", true
+            );
+
             Scribe_Values.Look(
                 ref settings.tradeSkillIconPosition,
                 "tradeSkillIconPosition", 0
@@ -76,7 +91,7 @@ namespace ZCN.QoL.EasyReading
                 ref settings.bookSkillIconSizePercent,
                 "bookSkillIconSizePercent", 125
             );
-            settings.bookSkillIconSizePercent = BookContentsSkillIcons.NormalizeSize(
+            settings.bookSkillIconSizePercent = BookIconMetrics.NormalizeSize(
                 settings.bookSkillIconSizePercent);
             Scribe_Values.Look(
                 ref settings.bookSkillIconPosition,

@@ -1,23 +1,37 @@
-# Building QoL: Easy Reading
+# Build instructions — QoL: Easy Reading v1.1.0 S3-QC-HF1
 
-The source projects require your **local, legally installed** RimWorld game assemblies and Harmony libraries. This repository does not bundle these dependencies.
+**Important:** The repository has up-to-date 1.6 and 1.7 source. The `Mod/` folder currently contains **only the 1.7 Release DLL**, because the supplied 1.6 Release DLL was the unpatched binary. The archive is not a completed dual-version installer. See [PACKAGING_STATUS.md](PACKAGING_STATUS.md).
 
-## RimWorld 1.6 — Visual Studio 2022
+## RimWorld 1.6 (.NET Framework 4.7.2 / Harmony 2)
 
-1. Copy `Source/1.6/RimWorld.local.props.example` to `Source/1.6/RimWorld.local.props`.
-2. Edit `RimWorldDir` to point to your 1.6 installation (contains `RimWorldWin64_Data/Managed/Assembly-CSharp.dll`).
-3. Edit `HarmonyDllPath` to point to **RimWorld 1.6 Harmony 2** `0Harmony.dll`.
-4. Open `Source/1.6/QoLEasyReading/QoLEasyReading.csproj`, choose **Release / Any CPU**, and build.
-5. Copy the resulting `bin/Release/QoLEasyReading.dll` to `Mod/QoLEasyReading/1.6/Assemblies/` if preparing a release.
+1. Copy `Source/1.6/RimWorld.local.props.example` to `Source/1.6/RimWorld.local.props` and set local 1.6 `RimWorldDir` (or `RimWorldManagedDir`) and `HarmonyDllPath`. Do not commit this private props file.
+2. Open `Source/1.6/QoLEasyReading/QoLEasyReading.csproj` in Visual Studio 2022 and rebuild **Debug and Release**; or, from that project directory, run:
 
-## RimWorld 1.7 — Visual Studio 2026
+   ```powershell
+   .\BuildAndInstall_RW16.ps1 -BuildOnly
+   ```
 
-1. Copy `Source/1.7/RimWorld17.local.props.example` to `Source/1.7/RimWorld17.local.props`.
-2. Edit `RimWorld17GameDir` (or `RimWorld17ManagedDir`) to point to the 1.7 installation containing `Assembly-CSharp.dll`, `UnityStubs.dll`, and `Waylith.dll`.
-3. Edit `Harmony17DllPath` to point to the **RimWorld 1.7 Harmony 3** `0Harmony.dll`.
-4. Open `Source/1.7/Projects/QoLEasyReading/QoLEasyReading.csproj`, choose **Release / Any CPU**, and build.
-5. Copy the resulting `bin/Release/QoLEasyReading.dll` to `Mod/QoLEasyReading/1.7/Assemblies/` if preparing a release.
+3. Check Debug 63 / Release 55 compiled C# entries, Debug 5 / Release 0 developer actions, assembly 1.1.0.0 and BUILD_ID `ER-RW16-S3QC-HF1-20261117-R1`.
+4. Load **the newly rebuilt Release DLL** with Quality Colors in real RimWorld 1.6, confirm no `<color=...>` markup appears in duplicate-owned schematic tooltip and record its SHA-256.
+5. Only then add that new DLL to `Mod/QoLEasyReading/1.6/Assemblies/`, restore 1.6 in the packaged About.xml supportedVersions, update `RELEASE_MANIFEST.json` and make a two-version ZIP. Do not reuse old v1.1.0 1.6 binaries.
 
-**Never commit:** `RimWorld.local.props`, `RimWorld17.local.props`, `.vs/`, `obj/`, `bin/`, `*.pdb`, unmodified game libraries, or Steam credentials.
+## RimWorld 1.7 (.NET 10 / Harmony 3 / Waylith)
 
-The checked-in `Mod/` directory is a release snapshot. It includes compiled release DLLs from the uploaded build. When changing source, rebuild the appropriate version and synchronize this snapshot before distribution. The 1.7 project uses SDK default compile items, including archived diagnostics files. They are not installed as Harmony hooks by the startup code in this build, but should be reviewed before larger refactoring.
+1. Copy `Source/1.7/RimWorld17.local.props.example` to `Source/1.7/RimWorld17.local.props` (not committed), or pass `-ReferencesDir`.
+2. Provide 1.7 `Assembly-CSharp.dll`, `UnityStubs.dll`, `Waylith.dll` and Harmony 3 `0Harmony.dll`. Do not mix 1.6/1.7 references.
+3. Open `Source/1.7/Projects/QoLEasyReading/QoLEasyReading.csproj` and rebuild both configurations or run:
+
+   ```powershell
+   .\BuildAndInstall_RW17.ps1 -BuildOnly -ReferencesDir 'C:\PATH_TO_RW17_DLLS'
+   ```
+
+4. Check Debug 63 / Release 55 C# entries and Debug 5 / Release 0 developer actions; release build ID `ER-RW17-S3QC-HF1-20261117-R1`.
+5. Re-test the Quality Colors duplicate tooltip **using the Release DLL**, and compare the final binary against `RELEASE_MANIFEST.json` before replacing the already-packaged approved binary.
+
+## Release hygiene
+
+- Official version: `v1.1.0` / assembly `1.1.0.0`; keep `QoL: Easy Reading` title and `zcn.qol.easyreading` PackageId unchanged.
+- The updated QC sanitizer is intentionally identical between the 1.6 and 1.7 source projects.
+- No external game, Harmony or Unity binaries are bundled. Do not commit `.git/`, `.vs/`, `bin/`, `obj/`, PDB, local `.props`, user paths, test saves or credentials.
+- Do not silently promote a rebuilt DLL without metadata, hash and in-game verification.
+- Confirm asset redistribution rights before publishing to GitHub Releases.

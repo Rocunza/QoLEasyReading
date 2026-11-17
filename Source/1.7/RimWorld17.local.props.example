@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project>
+  <!-- Copy to RimWorld17.local.props next to QoLEasyReading.csproj. Keep local.props private. -->
+  <!-- Point this at the 1.7 directory containing Assembly-CSharp.dll, UnityStubs.dll and Waylith.dll. -->
   <PropertyGroup>
-    <!-- For the 1.7 Waylith installation only; do NOT point to RimWorld 1.6. -->
-    <RimWorld17GameDir>C:\Games\RimWorld_1.7</RimWorld17GameDir>
-    <!-- Or set an explicit RimWorld17ManagedDir if DLLs live elsewhere. -->
-    <!-- The Harmony 3 binary inside the 1.7-compatible Harmony mod folder. -->
-    <Harmony17DllPath>C:\Games\Harmony17\0Harmony.dll</Harmony17DllPath>
+    <RimWorld17ManagedDir>C:\PATH_TO_RIMWORLD_1_7_DLL_DIRECTORY</RimWorld17ManagedDir>
+    <Harmony17DllPath>C:\PATH_TO_HARMONY3\0Harmony.dll</Harmony17DllPath>
   </PropertyGroup>
 </Project>

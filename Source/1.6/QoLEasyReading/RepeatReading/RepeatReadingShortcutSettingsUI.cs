@@ -17,16 +17,22 @@ namespace ZCN.QoL.EasyReading
             if (!settings.showRepeatReadingDialog) return;
 
             RepeatReadingShortcut.NormalizeSettings(settings);
+            string presetToggleLabel = EasyReadingI18n.Get("ER_PresetToggle");
+            string customToggleLabel = EasyReadingI18n.Get("ER_CustomToggle");
+            float shortcutToggleWidth = SettingsControlLayout.GroupWidth(
+                GameFont.Small, presetToggleLabel, customToggleLabel);
             listing.Gap(6f);
             listing.Label(EasyReadingI18n.Get("ER_PresetHeader"));
-            listing.CheckboxLabeled(EasyReadingI18n.Get("ER_PresetToggle"), ref settings.repeatReadingPresetShortcutEnabled);
+            SettingsControlLayout.Checkbox(listing, presetToggleLabel,
+                ref settings.repeatReadingPresetShortcutEnabled, shortcutToggleWidth);
             if (listing.ButtonText(EasyReadingI18n.Format("ER_ChangeKey", RepeatReadingShortcut.KeyLabel(settings.repeatReadingPresetKey)),
                     widthPct: 0.52f))
                 Find.WindowStack.Add(new Dialog_RepeatReadingKeyBinding(settings, true));
 
             listing.Gap(6f);
             listing.Label(EasyReadingI18n.Get("ER_CustomHeader"));
-            listing.CheckboxLabeled(EasyReadingI18n.Get("ER_CustomToggle"), ref settings.repeatReadingDialogShortcutEnabled);
+            SettingsControlLayout.Checkbox(listing, customToggleLabel,
+                ref settings.repeatReadingDialogShortcutEnabled, shortcutToggleWidth);
             if (listing.ButtonText(EasyReadingI18n.Format("ER_ChangeKey", RepeatReadingShortcut.KeyLabel(settings.repeatReadingDialogKey)),
                     widthPct: 0.52f))
                 Find.WindowStack.Add(new Dialog_RepeatReadingKeyBinding(settings, false));

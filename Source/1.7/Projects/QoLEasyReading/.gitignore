@@ -1,0 +1,11 @@
+# Never ship machine paths, game/Harmony assembly binaries or build cache.
+RimWorld17.local.props
+bin/
+obj/
+Port17_InstallBackups/
+PORT17_LAST_BUILD_INSTALL_LOG.json
+PORT17_BUILD_*.log
+*.user
+*.suo
+*.dll
+*.pdb

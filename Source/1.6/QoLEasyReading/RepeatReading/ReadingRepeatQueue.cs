@@ -137,6 +137,7 @@ namespace ZCN.QoL.EasyReading
 
                     added++;
                     // Keep 50-job tests readable; log the first three and last.
+#if DEBUG
                     if (EasyReadingDebug.Enabled && (i < 3 || i == count - 1))
                     {
                         Log.Message("[QoL: Easy Reading] DEBUG Stage 3F ENQUEUED: " +
@@ -146,6 +147,7 @@ namespace ZCN.QoL.EasyReading
                             ", jobDef=" + job.def.defName +
                             ", targetAIsBook=" + (job.targetA.Thing == book) + ".");
                     }
+#endif
                 }
 
                 after = Convert.ToInt32(countProp.GetValue(queue, null));
@@ -161,6 +163,7 @@ namespace ZCN.QoL.EasyReading
             {
                 // A rejected insertion can leave earlier successful jobs in
                 // the queue. We never delete user queue entries to roll back.
+#if DEBUG
                 if (EasyReadingDebug.Enabled)
                     Log.Message("[QoL: Easy Reading] DEBUG Stage 3F QUEUE RESULT: " +
                     "pawn=" + pawnName + ", book=" + bookName +
@@ -171,6 +174,7 @@ namespace ZCN.QoL.EasyReading
                     ", queueDelta=" +
                     (before >= 0 && after >= 0 ? (after - before).ToString() : "unknown") +
                     ", reason=" + reason + ".");
+#endif
 
                 if (reason != "none" && !reason.StartsWith("exception-", StringComparison.Ordinal))
                 {

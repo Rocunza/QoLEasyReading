@@ -33,6 +33,12 @@ namespace ZCN.QoL.EasyReading
         // Defaults ON for new configs; OFF still preserves vanilla trade rows.
         public bool showTradeSkillIcons = true;
 
+        // S3-B1: Schematic status markers are independent of Textbook skill icons.
+        // Trade '?' currently describes research only, NOT ownership.
+        public bool showSchematicBookcaseIcons = true;
+        public bool showSchematicReadMenuIcons = true;
+        public bool showSchematicTradeIcons = true;
+
         // 4S-2F2: Trade row location, independent of bookcase positioning.
         // 0 = before the book title, after vanilla item/info icons.
         // 1 = right side of the name column (legacy previous default).

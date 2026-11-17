@@ -1,0 +1,172 @@
+{
+  "schema": "QoLEasyReading-QCHF1-PARTIAL-BINARY-V1",
+  "modVersion": "1.1.0",
+  "packageId": "zcn.qol.easyreading",
+  "title": "QoL: Easy Reading",
+  "sourceTargets": [
+    "1.6",
+    "1.7"
+  ],
+  "packagedExecutableGameVersions": [
+    "1.7"
+  ],
+  "installZipName": "QoLEasyReading-v1.1.0-RW17-QCHF1.zip",
+  "buildIdentities": {
+    "1.6": "ER-RW16-S3QC-HF1-20261117-R1",
+    "1.7": "ER-RW17-S3QC-HF1-20261117-R1"
+  },
+  "includedReleaseDll": {
+    "path": "1.7/Assemblies/QoLEasyReading.dll",
+    "sizeBytes": 88576,
+    "sha256": "1b67e74594019982afcdbe3d252c254790ec2585cff8982ff9f5de49cd1451fd",
+    "source": "QoLEasyReading 261117 1812 1.7.zip :: bin/Release/QoLEasyReading.dll"
+  },
+  "excludedOutdatedDll": {
+    "path": "1.6/Assemblies/QoLEasyReading.dll",
+    "sha256": "03ff71b6168b2e827251a73b0218d00ca0ca12d9ebb37d90f9b92888124f90c4",
+    "reason": "PRE_QC_BUILD_STALE_DO_NOT_PACKAGE"
+  },
+  "readiness": {
+    "rw16Source": "CURRENT",
+    "rw16Release": "MISSING_NEW_BUILD",
+    "rw17Source": "CURRENT",
+    "rw17Release": "BINARY_PRESENT;INGAME_RELEASE_QA_PENDING",
+    "assetDistributionRights": "NOT_VERIFIED"
+  },
+  "qualityColorsSanitizerSha256": "bc4ec67c5d6a566978e5b73b5d519d07fdb3b740915f7f72101073429e1880a7",
+  "aboutRuntimeSupportedVersions": [
+    "1.7"
+  ],
+  "modFiles": [
+    {
+      "path": "1.7/Assemblies/QoLEasyReading.dll",
+      "sizeBytes": 88576,
+      "sha256": "1b67e74594019982afcdbe3d252c254790ec2585cff8982ff9f5de49cd1451fd"
+    },
+    {
+      "path": "About/About.xml",
+      "sizeBytes": 1918,
+      "sha256": "5b526c4407d9aafa047a8039a5fc08d00c2b65330470373323b88e866c3ee705"
+    },
+    {
+      "path": "About/Preview.png",
+      "sizeBytes": 227274,
+      "sha256": "525eb17b42bb1174db62b08c26a15a82f502e852a6ec4958b52853a4888e16c2"
+    },
+    {
+      "path": "About/PublishedFileId.txt",
+      "sizeBytes": 10,
+      "sha256": "9e81c90b0ab36d5e9296e2234400c9995f1743a2918887c508b5a2174f20d5bc"
+    },
+    {
+      "path": "Languages/English/Keyed/QoLEasyReading.xml",
+      "sizeBytes": 6583,
+      "sha256": "758d7fc9b42d8a22e52cc827529080963709d2fec00548a27b415934a98fd20f"
+    },
+    {
+      "path": "Languages/Korean/Keyed/QoLEasyReading.xml",
+      "sizeBytes": 7202,
+      "sha256": "784a6aaa0922ed5bcdec9f23e3e9d8600bf97207f7a58d1181cbc52f8fe4ae0d"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Animals.png",
+      "sizeBytes": 4154,
+      "sha256": "41810ab73c4d89fd6dc20d5c1cf299da4ca40327f63405d46c0aef352d3c99cc"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Artistic.png",
+      "sizeBytes": 15612,
+      "sha256": "c14d6f558aae9106c3f4017f697e4d390ef5a6886849651b053ed51f6ab1809b"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Construction.png",
+      "sizeBytes": 55361,
+      "sha256": "2ec3cf56a4df957f8ddc99dfb02801d72362ec18dad96425ca16aabbb529073b"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Cooking.png",
+      "sizeBytes": 55023,
+      "sha256": "7a5ad823d5f01f8fd287a7c66cd47706ab70b5d043e8dca361932a6321a5cf85"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Crafting.png",
+      "sizeBytes": 64116,
+      "sha256": "4dc1522544cefe8ced97470e9a037440ef23ccd03e7e56d20cb51677f367a418"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Intellectual.png",
+      "sizeBytes": 59598,
+      "sha256": "dc1650c58ed74e76f03dd95c25db6c31eb4000f1f0b2a0a8a7aceac2cc1bbdf1"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Medical.png",
+      "sizeBytes": 2085,
+      "sha256": "41270e023b6f3f9fc9c6973497c0afefcab56ef2ab2a8c4288584e09c6ec7e39"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Melee.png",
+      "sizeBytes": 20137,
+      "sha256": "d19a197dbb675bb3d18f6416eb8f0dac7225e1fe376dbb33fa31195c3ff69832"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Mining.png",
+      "sizeBytes": 63388,
+      "sha256": "4f1cce7e20736c7fce84f4dd375417da03d993aa96235a1d6cd1e1c62697272c"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Other.png",
+      "sizeBytes": 2222,
+      "sha256": "abf96e3a94cc65cc37a48f9a8002ae7183b2cd3fb747aef3b0398e296746f060"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Plants.png",
+      "sizeBytes": 56640,
+      "sha256": "94d09d1da87427921e281fbc4134ce8301761883885a22c0d3ef75238c0cf0f5"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Shooting.png",
+      "sizeBytes": 59267,
+      "sha256": "de2d7b8091c54410ce23e80293f3f79cf1d7588540af0ac5eabef88bb95e4926"
+    },
+    {
+      "path": "Textures/QoLEasyReading/BookSkills/Social.png",
+      "sizeBytes": 44177,
+      "sha256": "ea8cdd218ba3ea635ae0fa7fab8ac67a99f6fe801f1263723565921d5a05b8e9"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_Complete.png",
+      "sizeBytes": 6055,
+      "sha256": "8b9c9765402b7f19281aa0d4dd40efd17749743a2a432143af7390306af57f2d"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_Complete_S1.png",
+      "sizeBytes": 16576,
+      "sha256": "5500967b7f8fd5257c76e5a7d36395df45e9e8842afcbac184834c0be9a85e2b"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_Complete_S2.png",
+      "sizeBytes": 21983,
+      "sha256": "31d21aa22c119acda2b17249d3357d01c9c5eecdca658bd7cc35b5f66f11f44e"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_Complete_S3.png",
+      "sizeBytes": 28066,
+      "sha256": "50dc09e921dd41f49b320cf03a37f3503bf3ed587389c9d6d37507a578c22074"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_DuplicateWarning.png",
+      "sizeBytes": 5505,
+      "sha256": "23a194981ae261adf48ba28e6ee3ee34b2607b687defcd5770dc9652905fabc8"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_Review.png",
+      "sizeBytes": 5505,
+      "sha256": "23a194981ae261adf48ba28e6ee3ee34b2607b687defcd5770dc9652905fabc8"
+    },
+    {
+      "path": "Textures/QoLEasyReading/Schematic/Schematic_Unknown.png",
+      "sizeBytes": 6811,
+      "sha256": "0a43c2e3bb25f171155a4e62bc9f279b5a9246f3f0869a2cb1cb32a29b818662"
+    }
+  ]
+}

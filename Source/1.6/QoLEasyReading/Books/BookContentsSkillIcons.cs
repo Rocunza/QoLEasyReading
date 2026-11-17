@@ -10,77 +10,37 @@ using Verse;
 namespace ZCN.QoL.EasyReading
 {
     /// <summary>
-    /// BookUI-2-Fix2: only the bookcase Contents row is patched.
-    /// Prefix associates the one book with its vanilla label call;
-    /// transpiler replaces that single Widgets.Label with a layout-aware call;
-    /// postfix draws passive icons after all vanilla buttons have run.
-    /// No global GUI or input interception, and no gameplay changes.
+    /// BookUI-2-Fix2 / S3-A1: retain the one ITab_ContentsBooks.DoRow patch.
+    /// Only a single existing Widgets.Label call is replaced. The title and
+    /// icon share one row plan; no global UI hook or book/research mutation.
     /// </summary>
     [HarmonyPatch(typeof(ITab_ContentsBooks), "DoRow")]
     internal static class BookContentsSkillIcons
     {
         private const float RowHeight = 28f;
-        private const float EjectWidth = 24f;
-        private const float LabelStartX = 60f;
-        private const float IconStartPadding = 3f;
-        private const float SlotGap = 2f;
-        private const float TitleGap = 5f;
-        private const float MinimumTitleWidth = 65f;
         private static Book ActiveBook;
+        private static Book PlannedBook;
+        private static BookContentsIconLayout ActiveLayout;
+        private static bool HasLayout;
         private static bool TitleHookActive;
+#if DEBUG
         private static bool LoggedFirstRow;
         private static bool LoggedFirstLayout;
-
-        internal static int NormalizeSize(int size)
-        {
-            return size == 100 || size == 125 || size == 150 ? size : 125;
-        }
-
-        private static float IconSize(EasyReadingSettings settings)
-        {
-            switch (NormalizeSize(settings.bookSkillIconSizePercent))
-            {
-                case 100: return 18f;
-                case 150: return 27f;
-                default: return 23f;
-            }
-        }
-
-        private static bool TryLayout(Book book, float rowWidth, EasyReadingSettings settings,
-            out SkillDef first, out SkillDef second, out float iconX, out float slot)
-        {
-            first = null;
-            second = null;
-            iconX = 0f;
-            slot = 0f;
-            if (book == null || settings == null || !settings.showBookSkillIcons)
-                return false;
-            BookSkillIconCatalog.GetBookSkills(book, out first, out second);
-            if (first == null)
-                return false;
-            slot = IconSize(settings) + SlotGap;
-            float labelEnd = rowWidth - EjectWidth;
-            if (settings.bookSkillIconPosition == 1)
-                iconX = labelEnd - 2f * slot - IconStartPadding;
-            else
-                iconX = LabelStartX + IconStartPadding;
-
-            // Reserve 2 aligned slots even for a one-skill book. If the
-            // tab is too narrow, leave the entire vanilla row untouched.
-            float available = settings.bookSkillIconPosition == 1
-                ? iconX - TitleGap - LabelStartX
-                : labelEnd - (iconX + 2f * slot + TitleGap);
-            return available >= MinimumTitleWidth;
-        }
+        private static int LoggedSchematicKinds;
+        private static readonly HashSet<string> LoggedSchematicSuppressions =
+            new HashSet<string>(StringComparer.Ordinal);
+#endif
 
         [HarmonyPrefix]
         private static void Prefix(Book book)
         {
             ActiveBook = book;
+            PlannedBook = null;
+            HasLayout = false;
+            ActiveLayout = default(BookContentsIconLayout);
         }
 
-        // One method-call replacement inside ITab_ContentsBooks.DoRow only.
-        // Avoid a global Widgets.Label prefix (high-frequency method).
+        // Same existing one-method-call transpiler; never patch Widgets.Label globally.
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -100,33 +60,40 @@ namespace ZCN.QoL.EasyReading
                 yield return instr;
             }
             TitleHookActive = replaced;
-            // Keep vanilla method if the target is missing in a future update;
-            // never add a global replacement or disable book interactions.
         }
 
         private static void DrawAdjustedBookTitle(Rect rect, string title)
         {
             try
             {
-                EasyReadingSettings settings = EasyReadingMod.Settings;
-                SkillDef first, second;
-                float x, slot;
-                if (!TryLayout(ActiveBook, rect.xMax + EjectWidth, settings,
-                    out first, out second, out x, out slot))
+                BookContentsIconLayout layout;
+                string suppressed;
+                if (!BookContentsIconLayout.TryCreate(ActiveBook, rect,
+                    EasyReadingMod.Settings, out layout, out suppressed))
+                {
+#if DEBUG
+                    MaybeLogSchematicSuppression(ActiveBook, suppressed);
+#endif
+                    Widgets.Label(rect, title);
+                    return;
+                }
+                Rect adjusted = layout.AdjustTitle(rect);
+                if (adjusted.width <= 0f)
                 {
                     Widgets.Label(rect, title);
                     return;
                 }
-                if (settings.bookSkillIconPosition == 1)
-                    rect.xMax = x - TitleGap;
-                else
-                    rect.xMin = x + 2f * slot + TitleGap;
-                if (rect.width > 0f)
-                    Widgets.Label(rect, title.Truncate(rect.width));
+                Widgets.Label(adjusted, title.Truncate(adjusted.width));
+                // Publish after title drawing succeeds; postfix consumes precisely
+                // this state without running the research classifier a second time.
+                ActiveLayout = layout;
+                PlannedBook = ActiveBook;
+                HasLayout = true;
             }
             catch (Exception ex)
             {
-                // Do not break vanilla bookcase UI if a modded book throws.
+                HasLayout = false;
+                PlannedBook = null;
                 Log.ErrorOnce("[QoL: Easy Reading][BookUI] Title layout failed: " + ex,
                     1726194279);
                 Widgets.Label(rect, title);
@@ -136,57 +103,126 @@ namespace ZCN.QoL.EasyReading
         [HarmonyPostfix]
         private static void Postfix(Book book, float width, ref float curY)
         {
+            // Clear row state even when the screen is not repainting or the
+            // title hook was skipped by another UI patch.
+            BookContentsIconLayout layout = ActiveLayout;
+            bool hasMatchingLayout = HasLayout && object.ReferenceEquals(PlannedBook, book);
             ActiveBook = null;
-            EasyReadingSettings settings = EasyReadingMod.Settings;
-            if (book == null || settings == null || !settings.showBookSkillIcons)
+            PlannedBook = null;
+            HasLayout = false;
+            ActiveLayout = default(BookContentsIconLayout);
+            if (!TitleHookActive)
+            {
+                Log.WarningOnce("[QoL: Easy Reading][BookUI] Book title layout hook not found; icons suppressed for safety.",
+                        1726194281);
                 return;
+            }
+            if (!hasMatchingLayout || book == null)
+                return;
+
             try
             {
-                if (Event.current == null)
-                    return;
-                if (EasyReadingDebug.Enabled && Event.current.type == EventType.Repaint)
+                if (Event.current == null) return;
+#if DEBUG
+                if (layout.Source == BookContentsIconSource.Textbook &&
+                    EasyReadingDebug.Enabled && Event.current.type == EventType.Repaint)
                     BookSkillIconCatalog.AuditAssetsIfDebug();
+#endif
 
-                // If another RimWorld release or a mod changed DoRow's IL,
-                // do not risk drawing over unshifted text.
-                if (!TitleHookActive)
+                if (layout.Source == BookContentsIconSource.Textbook)
                 {
-                    if (EasyReadingDebug.Enabled)
-                        Log.WarningOnce("[QoL: Easy Reading][BookUI] Book title layout hook not found; skill icons suppressed for safety.",
-                            1726194281);
-                    return;
+#if DEBUG
+                    LogExistingTextbookAudit(book, layout);
+#endif
+                    float y = curY - RowHeight + (RowHeight - layout.Size) / 2f;
+                    PaintOne(layout.FirstSkill, new Rect(layout.IconX, y,
+                        layout.Size, layout.Size));
+                    if (layout.SecondSkill != null)
+                        PaintOne(layout.SecondSkill, new Rect(layout.IconX + layout.Slot,
+                            y, layout.Size, layout.Size));
                 }
-                SkillDef first, second;
-                float x, slot;
-                if (!TryLayout(book, width, settings, out first, out second, out x, out slot))
-                    return;
-                if (EasyReadingDebug.Enabled && !LoggedFirstRow &&
-                    Event.current.type == EventType.Repaint)
+                else if (layout.Source == BookContentsIconSource.Schematic)
                 {
-                    LoggedFirstRow = true;
-                    Log.Message("[QoL: Easy Reading][BookUI] First Contents textbook: " +
-                        book.LabelNoCount + " -> " + first.defName +
-                        (second == null ? "" : ", " + second.defName));
+#if DEBUG
+                    LogSchematicAudit(layout);
+#endif
+                    float y = curY - RowHeight + (RowHeight - layout.Size) / 2f;
+                    PaintSchematic(layout, new Rect(layout.IconX, y,
+                        layout.Size, layout.Size));
                 }
-                if (EasyReadingDebug.Enabled && !LoggedFirstLayout &&
-                    Event.current.type == EventType.Repaint)
-                {
-                    LoggedFirstLayout = true;
-                    Log.Message("[QoL: Easy Reading][BookUI] Layout ACTIVE, " +
-                        "icon size=" + NormalizeSize(settings.bookSkillIconSizePercent) +
-                        "%, position=" + (settings.bookSkillIconPosition == 0 ? "Left" : "Right") +
-                        ", title reserved=yes.");
-                }
-                float size = IconSize(settings);
-                float y = curY - RowHeight + (RowHeight - size) / 2f;
-                PaintOne(first, new Rect(x, y, size, size));
-                if (second != null)
-                    PaintOne(second, new Rect(x + slot, y, size, size));
             }
             catch (Exception ex)
             {
                 Log.ErrorOnce("[QoL: Easy Reading][BookUI] Contents layout/draw failed: " + ex,
                     1726194275);
+            }
+        }
+
+#if DEBUG
+        private static void LogExistingTextbookAudit(Book book, BookContentsIconLayout layout)
+        {
+            if (!EasyReadingDebug.Enabled || Event.current.type != EventType.Repaint)
+                return;
+            if (!LoggedFirstRow)
+            {
+                LoggedFirstRow = true;
+                Log.Message("[QoL: Easy Reading][BookUI] First Contents textbook: " +
+                    book.LabelNoCount + " -> " + layout.FirstSkill.defName +
+                    (layout.SecondSkill == null ? "" : ", " + layout.SecondSkill.defName));
+            }
+            if (!LoggedFirstLayout)
+            {
+                LoggedFirstLayout = true;
+                Log.Message("[QoL: Easy Reading][BookUI] Layout ACTIVE, " +
+                    "icon size=" + BookIconMetrics.NormalizeSize(
+                        EasyReadingMod.Settings.bookSkillIconSizePercent) +
+                    "%, position=" + (layout.Position == 0 ? "Left" : "Right") +
+                    ", title reserved=yes.");
+            }
+        }
+
+        private static void LogSchematicAudit(BookContentsIconLayout layout)
+        {
+            if (!EasyReadingDebug.Enabled || Event.current.type != EventType.Repaint)
+                return;
+            int bit = layout.SchematicKind == SchematicIconKind.AllFinished ? 2 : 1;
+            if ((LoggedSchematicKinds & bit) != 0) return;
+            LoggedSchematicKinds |= bit;
+            Log.Message("[QoL: Easy Reading][S3A1][BookcaseIcon] bookDef=Schematic; " +
+                "classification=" + layout.Classification +
+                "; finished=" + layout.FinishedCount +
+                "; projects=" + layout.ProjectCount +
+                "; icon=" + layout.SchematicKind +
+                "; slots=" + layout.SlotCount +
+                "; titleReserved=True; BUILD_ID=" + EasyReadingBuildIdentity.BuildId + ";");
+        }
+
+        private static void MaybeLogSchematicSuppression(Book book, string reason)
+        {
+            if (reason == null || !EasyReadingDebug.Enabled ||
+                Event.current == null || Event.current.type != EventType.Repaint ||
+                !SchematicBookcaseIconResolver.IsSchematic(book) ||
+                LoggedSchematicSuppressions.Count >= 8 ||
+                !LoggedSchematicSuppressions.Add(reason))
+                return;
+            Log.Message("[QoL: Easy Reading][S3A1][BookcaseIcon] " +
+                "suppressed=" + reason + "; BUILD_ID=" + EasyReadingBuildIdentity.BuildId + ";");
+        }
+
+#endif
+
+        private static void PaintSchematic(BookContentsIconLayout layout, Rect rect)
+        {
+            if (layout.SchematicTexture == null) return;
+            if (Event.current.type == EventType.Repaint)
+            {
+                Color saved = GUI.color;
+                try
+                {
+                    GUI.color = Color.white;
+                    GUI.DrawTexture(rect, layout.SchematicTexture);
+                }
+                finally { GUI.color = saved; }
             }
         }
 
@@ -205,7 +241,6 @@ namespace ZCN.QoL.EasyReading
                 }
                 finally { GUI.color = saved; }
             }
-            TooltipHandler.TipRegion(rect, skill.LabelCap.ToString());
         }
     }
 }

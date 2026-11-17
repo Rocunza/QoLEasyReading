@@ -16,6 +16,9 @@ namespace ZCN.QoL.EasyReading
             settings.showBookSkillIcons = defaults.showBookSkillIcons;
             settings.showReadMenuSkillIcons = defaults.showReadMenuSkillIcons;
             settings.showTradeSkillIcons = defaults.showTradeSkillIcons;
+            settings.showSchematicBookcaseIcons = defaults.showSchematicBookcaseIcons;
+            settings.showSchematicReadMenuIcons = defaults.showSchematicReadMenuIcons;
+            settings.showSchematicTradeIcons = defaults.showSchematicTradeIcons;
             settings.tradeSkillIconPosition = defaults.tradeSkillIconPosition;
             settings.bookSkillIconSizePercent = defaults.bookSkillIconSizePercent;
             settings.bookSkillIconPosition = defaults.bookSkillIconPosition;
@@ -32,6 +35,9 @@ namespace ZCN.QoL.EasyReading
             settings.showBookSkillIcons = false;
             settings.showReadMenuSkillIcons = false;
             settings.showTradeSkillIcons = false;
+            settings.showSchematicBookcaseIcons = false;
+            settings.showSchematicReadMenuIcons = false;
+            settings.showSchematicTradeIcons = false;
             settings.allowManualReadingDuringWork = false;
             settings.enableDebugLogging = false;
         }

@@ -7,7 +7,7 @@
   <ER_ReadMenuIconsDesc>책 읽기 메뉴 오른쪽에 기술 아이콘 1~2개를 표시합니다. 일반 독서 및 Ctrl/Alt 명령은 변경하지 않습니다.</ER_ReadMenuIconsDesc>
   <ER_ShowTradeIcons>거래창에 기술 아이콘 표시 (기본 ON)</ER_ShowTradeIcons>
   <ER_TradeIconsDesc>기술 서적의 이름 칸에 아이콘 공간을 확보합니다. 가격·수량·거래 조작은 변경하지 않습니다. 기술 구성이 섞인 묶음에는 표시하지 않습니다.</ER_TradeIconsDesc>
-  <ER_IconSizeLabel>기술 아이콘 크기 (책장 / 독서 메뉴 / 거래창):</ER_IconSizeLabel>
+  <ER_IconSizeLabel>책 아이콘 크기 (책장 / 독서 메뉴 / 거래창):</ER_IconSizeLabel>
   <ER_Size100>100%  (18px)</ER_Size100>
   <ER_Size125>125%  (23px, 기본값)</ER_Size125>
   <ER_Size150>150%  (27px)</ER_Size150>
@@ -56,4 +56,22 @@
   <ER_KeyErrorSettings>설정을 사용할 수 없습니다.</ER_KeyErrorSettings>
   <ER_KeyErrorAllowed>Ctrl, Alt, A~Z, F6~F12만 사용할 수 있습니다. Shift, Esc, Enter는 예약된 키입니다.</ER_KeyErrorAllowed>
   <ER_KeyErrorDuplicate>이미 다른 독서 명령에 지정된 단축키입니다.</ER_KeyErrorDuplicate>
+  <ER_SchematicIcons>설계도 연구 아이콘</ER_SchematicIcons>
+  <ER_ShowSchematicBookcaseIcons>책장 내용물에 표시</ER_ShowSchematicBookcaseIcons>
+  <ER_ShowSchematicReadMenuIcons>우클릭 독서 메뉴에 표시</ER_ShowSchematicReadMenuIcons>
+  <ER_ShowSchematicTradeIcons>거래창에 표시</ER_ShowSchematicTradeIcons>
+  <ER_SchematicStatusResearchAvailable>추가 연구 성과 획득 가능</ER_SchematicStatusResearchAvailable>
+  <ER_SchematicStatusReview>구매 전 확인 필요</ER_SchematicStatusReview>
+  <ER_SchematicStatusComplete>포함된 연구 모두 완료</ER_SchematicStatusComplete>
+  <ER_SchematicStatusUnavailable>현재 연구 보상 획득 불가</ER_SchematicStatusUnavailable>
+  <ER_TabBasic>기본</ER_TabBasic>
+  <ER_TabIcons>아이콘</ER_TabIcons>
+  <ER_SchematicTradeIconsDesc>? = 획득 가능한 연구가 남아 있으며 설계도 미보유를 확정한 것은 아닙니다. ! = 동일 연구 구성의 보유 설계도가 확인된 상인 판매품입니다(구매 중복 경고). ✓ = 포함된 연구를 모두 완료했습니다. 판매 행에는 !를 표시하지 않으며, 혼합 묶음은 표시하지 않습니다. 거래 조작은 변경하지 않습니다.</ER_SchematicTradeIconsDesc>
+  <ER_SchematicReadMenuDesc>설계도 독서 메뉴에 연구 상태 아이콘 하나를 표시합니다. 원래 독서 동작은 변경되지 않습니다.</ER_SchematicReadMenuDesc>
+  <ER_SchematicProgressFmt>설계도 연구: {0}/{1} 완료</ER_SchematicProgressFmt>
+  <ER_IconDisplayHeader>아이콘 표시 설정</ER_IconDisplayHeader>
+  <ER_DuplicateTooltipTitle>중복 설계도</ER_DuplicateTooltipTitle>
+  <ER_DuplicateTooltipBody>동일한 연구를 제공하는 설계도를 이미 보유하고 있습니다.</ER_DuplicateTooltipBody>
+  <ER_DuplicateTooltipOwnedHeader>보유 설계도:</ER_DuplicateTooltipOwnedHeader>
+  <ER_DuplicateTooltipMoreTitles>그 외 {0}종</ER_DuplicateTooltipMoreTitles>
 </LanguageData>

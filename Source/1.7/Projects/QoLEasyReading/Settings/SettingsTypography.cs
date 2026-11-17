@@ -10,13 +10,13 @@ namespace ZCN.QoL.EasyReading
     /// </summary>
     internal static class SettingsTypography
     {
-        internal static void FeatureToggle(Listing_Standard listing, string label, ref bool enabled)
+        internal static void FeatureToggle(Listing_Standard listing, string label, ref bool enabled, float groupWidth = 0f)
         {
             GameFont oldFont = Text.Font;
             try
             {
                 Text.Font = GameFont.Medium;
-                listing.CheckboxLabeled(label, ref enabled);
+                SettingsControlLayout.Checkbox(listing, label, ref enabled, groupWidth);
             }
             finally
             {

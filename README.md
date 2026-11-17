@@ -1,38 +1,45 @@
-# QoL: Easy Reading
+# QoL: Easy Reading — v1.1.0 (Quality Colors hotfix)
 
-A quality-of-life mod for **RimWorld 1.6 and 1.7** by **ZCN**. Adds textbook skill icons, configurable repeat-reading orders, and a manual reading exception during Work schedule hours.
+By **ZCN**. **Source projects:** RimWorld 1.6 + 1.7. **Current downloadable binary:** RimWorld **1.7 only**. The previously published RimWorld 1.6 Release DLL was built before the Quality Colors fix and is deliberately excluded until the maintainer produces and verifies a new 1.6 Release build.
 
-**[한국어 안내 / Korean README](README.ko.md)** · [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3828178548)
+[한국어 README](README.ko.md) · [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3828178548) · [Changelog](CHANGELOG.md) · [Packaging status](PACKAGING_STATUS.md)
 
 ## Features
 
-- Show textbook skill icons in **bookcase contents**, **right-click Read menus**, and **trade windows**. Supports one or two skill icons.
-- **Ctrl + Left Click** a Read command to queue your preset repeat count.
-- **Alt + Left Click** a Read command to open the custom repeat-count dialog.
-- Preserve regular Read and vanilla **Shift** job queueing.
-- Allow *manually ordered* reading to continue during a **Work** schedule (default **ON**, optional). Automatic reading and other job interruptions retain vanilla rules.
-- English and Korean settings, with independently configurable feature switches. **Harmony required; Biotech not required.**
+- Book skill icons in bookcases, right-click reading menus and trade windows.
+- Schematic research-state indicators in bookcases, right-click menus and trade windows; an advisory duplicate-ownership warning and owned-title tooltip when trading.
+- **Ctrl + Left Click** queues the preset repeat-read count; **Alt + Left Click** opens a count dialog. Ordinary Read and Shift queueing remain vanilla.
+- Manually ordered reading can continue during Work-scheduled hours (configurable, default ON).
+- Vanilla-style Basic / Icons settings tabs; English and Korean UI.
+- **Quality Colors compatibility hotfix:** known rich-text color/style tags are stripped from owned schematic titles in the duplicate tooltip while retaining the real title and quality text.
+- Release builds omit Easy Reading's developer-only diagnostics.
 
-## Installation
+## Installation (current GitHub package)
 
-Subscribe on [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3828178548), or copy the contents of [`Mod/QoLEasyReading`](Mod/QoLEasyReading) into the RimWorld mod directory as a single `QoLEasyReading` folder. Enable Harmony and then **QoL: Easy Reading** in the mod list.
+Download **`QoLEasyReading-v1.1.0-RW17-QCHF1.zip`** and extract its `QoLEasyReading/` folder into your RimWorld **1.7** `Mods` folder. Activate Harmony first. Do not activate the legacy combined `ReadAndLearnQoL` alongside this mod.
 
-The mod folder contains separate DLLs under `1.6/Assemblies` and `1.7/Assemblies`, plus shared `Languages`, `Textures`, and `About` resources. Do **not** enable the old combined ReadAndLearnQoL mod alongside this one.
+```text
+Mods/QoLEasyReading/
+  About/About.xml                # this install package explicitly declares 1.7 only
+  1.7/Assemblies/QoLEasyReading.dll
+  Languages/
+  Textures/
+```
 
-## Source / building
+**RimWorld 1.6 players:** This ZIP is **not** a working 1.6 package. The complete, hotfix-updated 1.6 source is at [`Source/1.6/QoLEasyReading`](Source/1.6/QoLEasyReading). Build a new 1.6 Release DLL using [BUILDING.md](BUILDING.md), validate it in game, and only then include it in an updated dual-version installer. An older DLL copied over the top would silently reintroduce the original tooltip defect.
 
-- [`Source/1.6/QoLEasyReading`](Source/1.6/QoLEasyReading): .NET Framework 4.7.2 / Visual Studio 2022 / Harmony 2 / RimWorld 1.6.
-- [`Source/1.7/Projects/QoLEasyReading`](Source/1.7/Projects/QoLEasyReading): .NET 10 / Visual Studio 2026 / Harmony 3 / RimWorld 1.7 Waylith.
-- See [`BUILDING.md`](BUILDING.md) for local reference setup. Game DLLs and Harmony are **not included**.
+## Source and tests
 
-## Compatibility notes
+- [RimWorld 1.6](Source/1.6/QoLEasyReading) — .NET Framework 4.7.2, Harmony 2.
+- [RimWorld 1.7](Source/1.7/Projects/QoLEasyReading) — .NET 10, Harmony 3, Waylith.
+- [Build instructions](BUILDING.md) · [Release checklist](RELEASE_CHECKLIST.md) · [Packaging manifest](RELEASE_MANIFEST.json).
 
-- Adding the mod to an existing save is supported for its own book features; create a save backup before changing any mod list.
-- Previously generated book titles may stay in the language used when the books were created. This behavior also occurs without Easy Reading.
-- The textures in `Textures/QoLEasyReading/BookSkills` are the maintainer-selected **13 original PNG assets**; do not substitute older development icon files.
+The QC fix was visually verified in Debug gameplay on both versions; the 1.7 Release DLL's hotfix build ID and source were checked. Final Release *in-game* verification remains separate from static checks. No new gameplay Harmony patches were introduced in this packaging pass.
 
-## License
+## Limitations and rights
 
-**MIT License.** Full text: [`LICENSE`](LICENSE). This license applies to the original code and repository assets for which the maintainer owns or controls the required rights; third-party works retain their own licenses. The maintainer must confirm that all 13 included icon assets may be distributed under MIT. RimWorld and Harmony are third-party dependencies and are not bundled here.
+Schematic ownership detection covers known container sources, not all custom containers from third-party mods; mixed/grouped trade directions are not exhaustively proven. Duplicate warnings are advisory, not purchase blockers. `Schematic_Review.png` remains a reserved asset identical to the duplicate-warning image.
+
+The [MIT License](LICENSE) applies only to material the author may license; confirm public redistribution rights for the 13 textbook icons and Schematic textures before publication. Game/Harmony/Unity binaries are not bundled.
 
 © 2026 ZCN.
